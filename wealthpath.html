@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WealthPath — Clarity & Control Over Your Financial Future</title>
+<style>
+  :root {
+    --green:   #10b981;
+    --green-d: #059669;
+    --blue:    #3b82f6;
+    --blue-d:  #2563eb;
+    --amber:   #f59e0b;
+    --red:     #ef4444;
+    --gray-50: #f9fafb;
+    --gray-100:#f3f4f6;
+    --gray-200:#e5e7eb;
+    --gray-300:#d1d5db;
+    --gray-400:#9ca3af;
+    --gray-500:#6b7280;
+    --gray-600:#4b5563;
+    --gray-700:#374151;
+    --gray-800:#1f2937;
+    --gray-900:#111827;
+    --radius:  12px;
+    --shadow:  0 4px 24px rgba(0,0,0,.08);
+    --shadow-lg:0 8px 40px rgba(0,0,0,.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+    box-shadow: 0 1px 8px rgba(0,0,0,.06);
+  }
+  .nav-brand { display: flex; align-items: center; gap: .6rem; }
+  .nav-logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--green), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 800; font-size: 1rem; letter-spacing: -.5px;
+  }
+  .nav-name { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    text-decoration: none; color: var(--gray-500); font-size: .9rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    background: var(--green); color: #fff; border: none;
+    padding: .45rem 1.1rem; border-radius: 8px; font-size: .9rem; font-weight: 600;
+    cursor: pointer; transition: background .2s;
+  }
+  .nav-cta:hover { background: var(--green-d); }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #064e3b 100%);
+    color: #fff; text-align: center;
+    padding: 5rem 2rem 4rem;
+  }
+  .hero-badge {
+    display: inline-block; background: rgba(16,185,129,.2);
+    border: 1px solid rgba(16,185,129,.4);
+    color: #6ee7b7; font-size: .78rem; font-weight: 600;
+    letter-spacing: .05em; text-transform: uppercase;
+    padding: .35rem .9rem; border-radius: 999px; margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800;
+    line-height: 1.15; margin-bottom: 1rem; letter-spacing: -.02em;
+  }
+  .hero h1 span { color: #6ee7b7; }
+  .hero p {
+    font-size: 1.1rem; color: #94a3b8; max-width: 520px; margin: 0 auto 2rem;
+  }
+  .hero-btn {
+    display: inline-block; background: var(--green); color: #fff;
+    padding: .85rem 2.2rem; border-radius: 10px;
+    font-size: 1rem; font-weight: 700; border: none; cursor: pointer;
+    transition: background .2s, transform .15s; box-shadow: 0 4px 20px rgba(16,185,129,.4);
+  }
+  .hero-btn:hover { background: var(--green-d); transform: translateY(-1px); }
+
+  /* ── SECTIONS ── */
+  section { padding: 4rem 2rem; max-width: 860px; margin: 0 auto; }
+  section + section { padding-top: 0; }
+
+  .section-label {
+    font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--green); margin-bottom: .5rem;
+  }
+  .section-title {
+    font-size: 1.65rem; font-weight: 800; color: var(--gray-900);
+    margin-bottom: .4rem; letter-spacing: -.02em;
+  }
+  .section-sub { color: var(--gray-500); margin-bottom: 2rem; font-size: .95rem; }
+
+  /* ── CARD ── */
+  .card {
+    background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid var(--gray-200);
+    overflow: hidden;
+  }
+
+  /* ── INTAKE ── */
+  #intake-section { padding-top: 3rem; }
+  .intake-card { padding: 2.5rem; position: relative; }
+
+  .progress-bar-wrap {
+    height: 4px; background: var(--gray-200); border-radius: 999px;
+    margin-bottom: 2.5rem; overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--green), var(--blue));
+    border-radius: 999px; transition: width .5s ease;
+  }
+
+  .step { display: none; animation: fadeUp .35s ease; }
+  .step.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-number {
+    font-size: .75rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--green); margin-bottom: .5rem;
+  }
+  .step h3 {
+    font-size: 1.4rem; font-weight: 700; color: var(--gray-900);
+    margin-bottom: .35rem;
+  }
+  .step p { color: var(--gray-500); font-size: .9rem; margin-bottom: 1.5rem; }
+
+  .intake-input {
+    width: 100%; padding: .9rem 1rem; font-size: 1.1rem;
+    border: 2px solid var(--gray-200); border-radius: 10px;
+    outline: none; transition: border-color .2s, box-shadow .2s;
+    color: var(--gray-900); background: var(--gray-50);
+    appearance: none;
+  }
+  .intake-input:focus { border-color: var(--green); box-shadow: 0 0 0 4px rgba(16,185,129,.12); background: #fff; }
+
+  .goal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .goal-btn {
+    padding: 1rem; border-radius: 10px;
+    border: 2px solid var(--gray-200); background: var(--gray-50);
+    cursor: pointer; font-size: .95rem; font-weight: 600; color: var(--gray-700);
+    transition: all .2s; text-align: left;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .goal-btn:hover { border-color: var(--green); background: #f0fdf4; color: var(--green-d); }
+  .goal-btn.selected { border-color: var(--green); background: #ecfdf5; color: var(--green-d); }
+  .goal-btn .goal-icon { font-size: 1.3rem; }
+
+  .btn-row { display: flex; gap: .75rem; margin-top: 1.75rem; align-items: center; }
+  .btn-back {
+    padding: .7rem 1.4rem; border-radius: 9px;
+    border: 2px solid var(--gray-200); background: #fff;
+    font-size: .9rem; font-weight: 600; color: var(--gray-500);
+    cursor: pointer; transition: all .2s;
+  }
+  .btn-back:hover { border-color: var(--gray-400); color: var(--gray-700); }
+  .btn-next {
+    flex: 1; padding: .8rem 1.4rem; border-radius: 9px;
+    background: var(--green); color: #fff;
+    border: none; font-size: 1rem; font-weight: 700;
+    cursor: pointer; transition: background .2s; max-width: 220px;
+  }
+  .btn-next:hover { background: var(--green-d); }
+  .btn-next:disabled { background: var(--gray-300); cursor: not-allowed; }
+
+  .error-msg {
+    color: var(--red); font-size: .8rem; margin-top: .5rem;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+
+  /* ── RESULTS ── */
+  #results { display: none; }
+  #results.visible { display: block; }
+
+  .results-header {
+    padding: 2rem 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .health-badge {
+    padding: .45rem 1rem; border-radius: 999px;
+    font-size: .8rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .health-poor   { background: #fef2f2; color: #dc2626; }
+  .health-avg    { background: #fffbeb; color: #d97706; }
+  .health-strong { background: #ecfdf5; color: #059669; }
+
+  .results-body { padding: 2rem 2.5rem; }
+
+  .metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  .metric-card {
+    background: var(--gray-50); border: 1px solid var(--gray-200);
+    border-radius: 10px; padding: 1.1rem;
+  }
+  .metric-label { font-size: .75rem; font-weight: 600; color: var(--gray-500); margin-bottom: .25rem; text-transform: uppercase; letter-spacing: .05em; }
+  .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); }
+  .metric-sub   { font-size: .75rem; color: var(--gray-400); margin-top: .1rem; }
+
+  /* Bar Chart */
+  .chart-section { margin-bottom: 2rem; }
+  .chart-title { font-size: .85rem; font-weight: 700; color: var(--gray-700); margin-bottom: 1rem; }
+  .bar-group { display: flex; flex-direction: column; gap: .75rem; }
+  .bar-item { display: flex; align-items: center; gap: .75rem; }
+  .bar-label { font-size: .82rem; font-weight: 600; color: var(--gray-600); width: 80px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 28px; background: var(--gray-100); border-radius: 6px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 6px;
+    display: flex; align-items: center; padding-left: .6rem;
+    font-size: .75rem; font-weight: 700; color: #fff;
+    transition: width 1s cubic-bezier(.22,1,.36,1);
+    white-space: nowrap; min-width: 2px;
+  }
+  .bar-fill.income  { background: linear-gradient(90deg, var(--blue), #60a5fa); }
+  .bar-fill.expense { background: linear-gradient(90deg, #f97316, #fb923c); }
+  .bar-fill.savings { background: linear-gradient(90deg, var(--green), #34d399); }
+  .bar-amount { font-size: .82rem; font-weight: 700; color: var(--gray-700); width: 70px; text-align: right; }
+
+  /* Savings rate ring */
+  .rate-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
+  .ring-wrap { position: relative; width: 90px; height: 90px; flex-shrink: 0; }
+  .ring-wrap svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--gray-100); stroke-width: 10; }
+  .ring-fg { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(.22,1,.36,1); }
+  .ring-label {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .ring-pct  { font-size: 1.1rem; font-weight: 800; color: var(--gray-900); line-height: 1; }
+  .ring-text { font-size: .6rem; color: var(--gray-400); font-weight: 600; }
+  .rate-info h4 { font-size: 1rem; font-weight: 700; margin-bottom: .2rem; }
+  .rate-info p  { font-size: .85rem; color: var(--gray-500); }
+
+  /* Recommendations */
+  .recs-section { }
+  .recs-title { font-size: .85rem; font-weight: 700; color: var(--gray-700); margin-bottom: 1rem; }
+  .rec-item {
+    display: flex; gap: .85rem; align-items: flex-start;
+    padding: .9rem 1rem; border-radius: 10px;
+    border: 1px solid var(--gray-200); margin-bottom: .6rem;
+    background: #fff;
+  }
+  .rec-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .rec-text strong { font-size: .9rem; color: var(--gray-800); display: block; margin-bottom: .15rem; }
+  .rec-text span   { font-size: .82rem; color: var(--gray-500); }
+
+  .btn-restart {
+    margin-top: 1.5rem; padding: .65rem 1.4rem;
+    border-radius: 9px; border: 2px solid var(--gray-200);
+    background: #fff; color: var(--gray-600);
+    font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .2s;
+  }
+  .btn-restart:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── BOOKING ── */
+  #booking { scroll-margin-top: 80px; }
+  .booking-card { padding: 2.5rem; }
+  .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: .4rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: .82rem; font-weight: 600; color: var(--gray-700); }
+  .form-input, .form-select, .form-textarea {
+    padding: .75rem 1rem; border: 2px solid var(--gray-200); border-radius: 9px;
+    font-size: .95rem; color: var(--gray-900); background: var(--gray-50);
+    outline: none; transition: border-color .2s, box-shadow .2s;
+    font-family: inherit;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--green); box-shadow: 0 0 0 4px rgba(16,185,129,.1);
+    background: #fff;
+  }
+  .form-textarea { resize: vertical; min-height: 90px; }
+  .form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+  .btn-book {
+    margin-top: 1.25rem; width: 100%; padding: .9rem;
+    background: var(--green); color: #fff; border: none; border-radius: 10px;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    transition: background .2s, transform .15s;
+    box-shadow: 0 4px 16px rgba(16,185,129,.3);
+  }
+  .btn-book:hover { background: var(--green-d); transform: translateY(-1px); }
+
+  .booking-success {
+    display: none; text-align: center; padding: 2rem;
+  }
+  .booking-success .check-circle {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #ecfdf5; border: 3px solid #6ee7b7;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin: 0 auto 1rem;
+  }
+  .booking-success h3 { font-size: 1.3rem; font-weight: 700; color: var(--gray-900); margin-bottom: .5rem; }
+  .booking-success p  { color: var(--gray-500); font-size: .9rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--gray-900); color: var(--gray-400);
+    text-align: center; padding: 2rem;
+    font-size: .82rem;
+  }
+  footer strong { color: #fff; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .metrics-grid .metric-card:last-child { grid-column: 1 / -1; }
+    .booking-grid { grid-template-columns: 1fr; }
+    .goal-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .results-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">W</div>
+    <span class="nav-name">WealthPath</span>
+  </div>
+  <div class="nav-links">
+    <a href="#intake-section">Assessment</a>
+    <a href="#booking">Book a Call</a>
+  </div>
+  <button class="nav-cta" onclick="scrollTo('#booking')">Free Consultation</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Personal Finance Coaching</div>
+  <h1>Clarity and control over your<br><span>financial future</span></h1>
+  <p>Answer 4 quick questions and get a personalized financial health snapshot with actionable next steps — in under 2 minutes.</p>
+  <button class="hero-btn" onclick="scrollTo('#intake-section')">Start My Assessment &rarr;</button>
+</div>
+
+<!-- INTAKE -->
+<section id="intake-section">
+  <div class="section-label">Step 1 of 4</div>
+  <div class="section-title">Your Financial Assessment</div>
+  <div class="section-sub">One question at a time — quick and straightforward.</div>
+
+  <div class="card" id="intake-card">
+    <div class="intake-card">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill" style="width:25%"></div>
+      </div>
+
+      <!-- Step 1: Income -->
+      <div class="step active" id="step-1">
+        <div class="step-number">Question 1 of 4</div>
+        <h3>What is your monthly income?</h3>
+        <p>Include all sources — salary, freelance, side income, etc.</p>
+        <input class="intake-input" type="number" id="income" placeholder="e.g. 5000" min="0">
+        <div class="error-msg" id="err-1">Please enter a valid income amount.</div>
+        <div class="btn-row">
+          <button class="btn-next" onclick="nextStep(1)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Expenses -->
+      <div class="step" id="step-2">
+        <div class="step-number">Question 2 of 4</div>
+        <h3>What are your monthly expenses?</h3>
+        <p>Rent, groceries, subscriptions, bills — everything you spend.</p>
+        <input class="intake-input" type="number" id="expenses" placeholder="e.g. 3500" min="0">
+        <div class="error-msg" id="err-2">Please enter a valid expense amount.</div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep(2)">Back</button>
+          <button class="btn-next" onclick="nextStep(2)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Savings -->
+      <div class="step" id="step-3">
+        <div class="step-number">Question 3 of 4</div>
+        <h3>How much do you have in savings?</h3>
+        <p>Total across all savings accounts, not monthly contributions.</p>
+        <input class="intake-input" type="number" id="savings" placeholder="e.g. 8000" min="0">
+        <div class="error-msg" id="err-3">Please enter a valid savings amount.</div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep(3)">Back</button>
+          <button class="btn-next" onclick="nextStep(3)">Continue &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Goal -->
+      <div class="step" id="step-4">
+        <div class="step-number">Question 4 of 4</div>
+        <h3>What is your primary financial goal?</h3>
+        <p>Choose the one that matters most to you right now.</p>
+        <div class="goal-grid">
+          <button class="goal-btn" onclick="selectGoal(this, 'Save more')">
+            <span class="goal-icon">💰</span> Save More
+          </button>
+          <button class="goal-btn" onclick="selectGoal(this, 'Get out of debt')">
+            <span class="goal-icon">⛓️</span> Get Out of Debt
+          </button>
+          <button class="goal-btn" onclick="selectGoal(this, 'Invest')">
+            <span class="goal-icon">📈</span> Start Investing
+          </button>
+          <button class="goal-btn" onclick="selectGoal(this, 'Buy a home')">
+            <span class="goal-icon">🏠</span> Buy a Home
+          </button>
+        </div>
+        <div class="error-msg" id="err-4">Please select a goal to continue.</div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="prevStep(4)">Back</button>
+          <button class="btn-next" id="btn-submit" onclick="submitIntake()">See My Results &rarr;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results" style="margin-top:1.5rem;">
+    <div class="card">
+      <div class="results-header">
+        <div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem;">Your Financial Health</div>
+          <div id="health-label" style="font-size:1.6rem;font-weight:800;color:var(--gray-900);"></div>
+        </div>
+        <span class="health-badge" id="health-badge"></span>
+      </div>
+      <div class="results-body">
+
+        <!-- Metrics -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Monthly Income</div>
+            <div class="metric-value" id="r-income"></div>
+            <div class="metric-sub">Gross monthly</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Monthly Expenses</div>
+            <div class="metric-value" id="r-expenses"></div>
+            <div class="metric-sub">Total outgoings</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Monthly Surplus</div>
+            <div class="metric-value" id="r-surplus"></div>
+            <div class="metric-sub">After expenses</div>
+          </div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="chart-section">
+          <div class="chart-title">INCOME VS EXPENSES BREAKDOWN</div>
+          <div class="bar-group">
+            <div class="bar-item">
+              <div class="bar-label">Income</div>
+              <div class="bar-track">
+                <div class="bar-fill income" id="bar-income" style="width:0%"></div>
+              </div>
+              <div class="bar-amount" id="bar-income-lbl"></div>
+            </div>
+            <div class="bar-item">
+              <div class="bar-label">Expenses</div>
+              <div class="bar-track">
+                <div class="bar-fill expense" id="bar-expenses" style="width:0%"></div>
+              </div>
+              <div class="bar-amount" id="bar-expenses-lbl"></div>
+            </div>
+            <div class="bar-item">
+              <div class="bar-label">Savings</div>
+              <div class="bar-track">
+                <div class="bar-fill savings" id="bar-savings" style="width:0%"></div>
+              </div>
+              <div class="bar-amount" id="bar-savings-lbl"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Savings rate ring -->
+        <div class="rate-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 90 90" width="90" height="90">
+              <circle class="ring-bg" cx="45" cy="45" r="35"/>
+              <circle class="ring-fg" id="ring-fg" cx="45" cy="45" r="35"
+                stroke-dasharray="219.9"
+                stroke-dashoffset="219.9"/>
+            </svg>
+            <div class="ring-label">
+              <div class="ring-pct" id="ring-pct">0%</div>
+              <div class="ring-text">SAVED</div>
+            </div>
+          </div>
+          <div class="rate-info">
+            <h4 id="rate-headline">Savings Rate</h4>
+            <p id="rate-detail">Your savings rate is the portion of income you keep each month.</p>
+          </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="recs-section">
+          <div class="recs-title">PERSONALIZED RECOMMENDATIONS</div>
+          <div id="recs-list"></div>
+        </div>
+
+        <button class="btn-restart" onclick="restartIntake()">&#8634; Redo Assessment</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="section-label">Free Consultation</div>
+  <div class="section-title">Book a Strategy Session</div>
+  <div class="section-sub">30 minutes. No obligation. Let's map out your path to financial clarity.</div>
+
+  <div class="card">
+    <div class="booking-card" id="booking-form-wrap">
+      <div class="booking-grid">
+        <div class="form-group">
+          <label for="b-name">Full Name</label>
+          <input class="form-input" type="text" id="b-name" placeholder="Jane Doe">
+        </div>
+        <div class="form-group">
+          <label for="b-email">Email Address</label>
+          <input class="form-input" type="email" id="b-email" placeholder="jane@example.com">
+        </div>
+        <div class="form-group">
+          <label for="b-time">Preferred Time</label>
+          <select class="form-select" id="b-time">
+            <option value="">Select a time slot</option>
+            <option>Weekday Morning (9am – 12pm)</option>
+            <option>Weekday Afternoon (12pm – 5pm)</option>
+            <option>Weekday Evening (5pm – 8pm)</option>
+            <option>Weekend Morning (9am – 12pm)</option>
+            <option>Weekend Afternoon (12pm – 3pm)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="b-goal">Primary Goal</label>
+          <select class="form-select" id="b-goal">
+            <option value="">Select your goal</option>
+            <option>Save More</option>
+            <option>Get Out of Debt</option>
+            <option>Start Investing</option>
+            <option>Buy a Home</option>
+            <option>Retirement Planning</option>
+            <option>General Financial Clarity</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="b-notes">Anything you'd like us to know?</label>
+          <textarea class="form-textarea" id="b-notes" placeholder="Share a bit about your current situation or what you hope to get out of this session…"></textarea>
+        </div>
+      </div>
+      <button class="btn-book" onclick="submitBooking()">Book My Free Consultation &rarr;</button>
+    </div>
+
+    <div class="booking-success" id="booking-success">
+      <div class="check-circle">✓</div>
+      <h3>You're booked!</h3>
+      <p>Thanks for reaching out. We'll confirm your session details within 24 hours.<br>Check your inbox for a confirmation email.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>WealthPath</strong> &mdash; Clarity and control over your financial future<br>
+  <span style="font-size:.75rem;margin-top:.4rem;display:block;color:var(--gray-600)">
+    &copy; 2026 WealthPath. All rights reserved. This tool is for educational purposes only.
+  </span>
+</footer>
+
+<script>
+  // ── Utility ──
+  const $ = id => document.getElementById(id);
+  const fmt = n => '$' + Math.abs(n).toLocaleString('en-US');
+  const scrollTo = sel => document.querySelector(sel).scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  let currentStep = 1;
+  let selectedGoal = '';
+
+  // ── Step navigation ──
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    $('step-' + n).classList.add('active');
+    currentStep = n;
+    $('progress-fill').style.width = (n * 25) + '%';
+    document.querySelector('.section-label').textContent = 'Step ' + n + ' of 4';
+  }
+
+  function nextStep(from) {
+    if (from === 1) {
+      const v = parseFloat($('income').value);
+      if (!v || v < 0) { $('err-1').classList.add('show'); return; }
+      $('err-1').classList.remove('show');
+    }
+    if (from === 2) {
+      const v = parseFloat($('expenses').value);
+      if (v === '' || v < 0 || isNaN(v)) { $('err-2').classList.add('show'); return; }
+      $('err-2').classList.remove('show');
+    }
+    if (from === 3) {
+      const v = parseFloat($('savings').value);
+      if (v === '' || v < 0 || isNaN(v)) { $('err-3').classList.add('show'); return; }
+      $('err-3').classList.remove('show');
+    }
+    showStep(from + 1);
+  }
+
+  function prevStep(from) { showStep(from - 1); }
+
+  function selectGoal(el, goal) {
+    document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedGoal = goal;
+    $('err-4').classList.remove('show');
+  }
+
+  // ── Submit & calculate ──
+  function submitIntake() {
+    if (!selectedGoal) { $('err-4').classList.add('show'); return; }
+
+    const income   = parseFloat($('income').value)   || 0;
+    const expenses = parseFloat($('expenses').value) || 0;
+    const savings  = parseFloat($('savings').value)  || 0;
+    const surplus  = income - expenses;
+    const rate     = income > 0 ? Math.max(0, (surplus / income) * 100) : 0;
+    const months   = income > 0 ? savings / income : 0;
+
+    // ── Health score ──
+    let health, badgeClass;
+    if (rate >= 20 && surplus >= 0) {
+      health = 'Strong'; badgeClass = 'health-strong';
+    } else if (rate >= 5 || (surplus >= 0 && rate >= 0)) {
+      health = 'Average'; badgeClass = 'health-avg';
+    } else {
+      health = 'Poor'; badgeClass = 'health-poor';
+    }
+
+    // ── Render header ──
+    $('health-label').textContent = health + ' Financial Health';
+    const badge = $('health-badge');
+    badge.textContent = health;
+    badge.className = 'health-badge ' + badgeClass;
+
+    // ── Metrics ──
+    $('r-income').textContent   = fmt(income);
+    $('r-expenses').textContent = fmt(expenses);
+    $('r-surplus').style.color  = surplus >= 0 ? 'var(--green)' : 'var(--red)';
+    $('r-surplus').textContent  = (surplus >= 0 ? '+' : '-') + fmt(surplus);
+
+    // ── Bars ──
+    const max = Math.max(income, expenses, 1);
+    setTimeout(() => {
+      $('bar-income').style.width   = Math.max(4, (income / max * 100)) + '%';
+      $('bar-expenses').style.width = Math.max(4, (expenses / max * 100)) + '%';
+      $('bar-savings').style.width  = Math.max(4, Math.min(savings / max * 100, 100)) + '%';
+    }, 80);
+    $('bar-income').textContent   = '';
+    $('bar-expenses').textContent = '';
+    $('bar-savings').textContent  = '';
+    $('bar-income-lbl').textContent   = fmt(income);
+    $('bar-expenses-lbl').textContent = fmt(expenses);
+    $('bar-savings-lbl').textContent  = fmt(savings);
+
+    // ── Ring ──
+    const clampedRate = Math.min(rate, 100);
+    const circ = 219.9;
+    const offset = circ - (circ * clampedRate / 100);
+    const ring = $('ring-fg');
+    ring.style.stroke = rate >= 20 ? 'var(--green)' : rate >= 5 ? 'var(--amber)' : 'var(--red)';
+    setTimeout(() => { ring.style.strokeDashoffset = offset; }, 80);
+    $('ring-pct').textContent = rate.toFixed(1) + '%';
+    $('rate-headline').textContent = 'Savings Rate: ' + rate.toFixed(1) + '%';
+
+    let rateDetail;
+    if (rate >= 20)      rateDetail = 'Excellent! You\'re saving more than 20% of income — a strong foundation.';
+    else if (rate >= 10) rateDetail = 'Good progress. Aim for 20%+ by gradually cutting discretionary spending.';
+    else if (rate >= 0)  rateDetail = 'There\'s room to grow. Even small increases compound significantly over time.';
+    else                 rateDetail = 'Your expenses exceed income. Addressing this is the most urgent priority.';
+    $('rate-detail').textContent = rateDetail;
+
+    // ── Recommendations ──
+    const recs = buildRecs(income, expenses, savings, surplus, rate, months, selectedGoal);
+    const list = $('recs-list');
+    list.innerHTML = recs.map(r => `
+      <div class="rec-item">
+        <div class="rec-icon" style="background:${r.bg}">${r.icon}</div>
+        <div class="rec-text">
+          <strong>${r.title}</strong>
+          <span>${r.body}</span>
+        </div>
+      </div>`).join('');
+
+    // ── Show results ──
+    const results = $('results');
+    results.classList.add('visible');
+    setTimeout(() => results.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+  }
+
+  function buildRecs(income, expenses, savings, surplus, rate, months, goal) {
+    const recs = [];
+
+    // Universal: emergency fund
+    if (months < 3) {
+      recs.push({
+        icon: '🛡️', bg: '#eff6ff',
+        title: 'Build Your Emergency Fund First',
+        body: `You have roughly ${months.toFixed(1)} months of expenses saved. Aim for 3–6 months (${fmt(expenses * 3)}–${fmt(expenses * 6)}) before anything else — it's your financial safety net.`
+      });
+    } else {
+      recs.push({
+        icon: '✅', bg: '#ecfdf5',
+        title: 'Emergency Fund: Solid',
+        body: `You have ${months.toFixed(1)} months of expenses covered. Great — now you can focus on growth without risking instability.`
+      });
+    }
+
+    // Spending ratio
+    if (income > 0 && expenses / income > 0.8) {
+      recs.push({
+        icon: '✂️', bg: '#fef3c7',
+        title: 'Trim Your Expense Ratio',
+        body: `You're spending ${((expenses/income)*100).toFixed(0)}% of income. The 50/30/20 rule suggests needs ≤50%, wants ≤30%, savings ≥20%. Review subscriptions and variable costs first.`
+      });
+    }
+
+    // Goal-specific
+    if (goal === 'Save more') {
+      recs.push({
+        icon: '⚡', bg: '#f0fdf4',
+        title: 'Automate Your Savings',
+        body: `Set up an automatic transfer of ${surplus > 0 ? fmt(Math.max(surplus * 0.5, 50)) : '$50+'} on payday. Paying yourself first removes the temptation to spend — even a 1% increase each month compounds powerfully.`
+      });
+    } else if (goal === 'Get out of debt') {
+      recs.push({
+        icon: '⛓️', bg: '#fdf2f8',
+        title: 'Attack High-Interest Debt First',
+        body: 'List all debts by interest rate. Apply any surplus to the highest-rate balance while making minimums on the rest (avalanche method). This saves the most interest long-term.'
+      });
+      if (surplus > 0) {
+        recs.push({
+          icon: '🔁', bg: '#eff6ff',
+          title: `Direct Your $${surplus.toLocaleString()} Surplus`,
+          body: `You have a monthly surplus. Even directing 70% of it (${fmt(surplus * 0.7)}/mo) to debt repayment can dramatically cut your payoff timeline.`
+        });
+      }
+    } else if (goal === 'Invest') {
+      recs.push({
+        icon: '📈', bg: '#f0fdf4',
+        title: 'Start With Tax-Advantaged Accounts',
+        body: 'Max your 401(k) employer match first (free money), then contribute to a Roth IRA (up to $7,000/yr in 2026). A simple 3-fund index portfolio (US, International, Bonds) is proven and low-cost.'
+      });
+      if (rate < 10) {
+        recs.push({
+          icon: '⚠️', bg: '#fffbeb',
+          title: 'Increase Cash Flow Before Investing Heavily',
+          body: `With a ${rate.toFixed(1)}% savings rate, grow your buffer first. Investing borrowed money or spending your safety net to invest amplifies risk. Aim for 10–15% savings rate before heavy investing.`
+        });
+      }
+    } else if (goal === 'Buy a home') {
+      recs.push({
+        icon: '🏠', bg: '#f0f9ff',
+        title: 'Plan for 20% Down + Closing Costs',
+        body: 'A 20% down payment avoids PMI. Don\'t forget 2–5% for closing costs. If you\'re still building savings, open a dedicated high-yield savings account and set a target purchase date.'
+      });
+      recs.push({
+        icon: '📊', bg: '#faf5ff',
+        title: 'Protect Your Credit Score',
+        body: 'Mortgage rates are heavily credit-score driven. Pay all bills on time, keep credit utilisation below 30%, and avoid opening new credit lines 12 months before applying.'
+      });
+    }
+
+    // Positive reinforcement if strong
+    if (rate >= 20 && surplus > 0) {
+      recs.push({
+        icon: '🚀', bg: '#ecfdf5',
+        title: 'You\'re Ahead of 80% of People',
+        body: `A ${rate.toFixed(1)}% savings rate puts you in excellent shape. Consider level-up moves: maxing ISA/pension contributions, rental property, or building a taxable brokerage account.`
+      });
+    }
+
+    return recs.slice(0, 3);
+  }
+
+  // ── Restart ──
+  function restartIntake() {
+    $('income').value = '';
+    $('expenses').value = '';
+    $('savings').value = '';
+    selectedGoal = '';
+    document.querySelectorAll('.goal-btn').forEach(b => b.classList.remove('selected'));
+    $('results').classList.remove('visible');
+    showStep(1);
+    $('intake-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── Booking ──
+  function submitBooking() {
+    const name  = $('b-name').value.trim();
+    const email = $('b-email').value.trim();
+    const time  = $('b-time').value;
+    if (!name || !email || !time) {
+      alert('Please fill in your name, email, and preferred time to book.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    $('booking-form-wrap').style.display = 'none';
+    $('booking-success').style.display   = 'block';
+  }
+
+  // ── Enter key support ──
+  ['income','expenses','savings'].forEach((id, i) => {
+    $(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') nextStep(i + 1);
+    });
+  });
+</script>
+</body>
+</html>
