@@ -1,2 +1,2 @@
-# wealth-path
-Wealth Path
+# Chatur
+Intelligence
